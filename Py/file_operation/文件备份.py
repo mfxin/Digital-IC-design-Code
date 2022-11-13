@@ -1,0 +1,10 @@
+old_name = input('请输入需要备份的文件名：')
+index = old_name.rfind('.')
+new_name = old_name[:index] + '[备份]'
+print(new_name)
+f_b = open(new_name+old_name[index:], 'w+')
+f = open(old_name, 'r+')
+con = f.read()
+f_b.write(con)
+f.close()
+f_b.close()
