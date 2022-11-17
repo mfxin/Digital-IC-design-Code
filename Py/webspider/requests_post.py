@@ -1,5 +1,6 @@
 import requests
 import json
+import sys
 
 
 class YouDao(object):
@@ -46,10 +47,18 @@ class YouDao(object):
 
 
 if __name__ == '__main__':
-    while True:
-        word = input("输入你需要翻译的内容：")
-        if word == '-1':
-            break
-        else:
-            youdao = YouDao(word)
-            youdao.run()
+    # print(sys.argv)
+    '''命令行实现翻译'''
+    word = sys.argv[1]
+
+    youdao = YouDao(word)
+    youdao.run()
+
+    '''循环翻译'''
+    # while True:
+    #     word = input("输入你需要翻译的内容：")
+    #     if word == '-1':
+    #         break
+    #     else:
+    #         youdao = YouDao(word)
+    #         youdao.run()
