@@ -67,6 +67,7 @@ class Zhanli(object):
                     index2 = data.find("TurnPageToKnetV('au'", index2 + 1)  # 发明人
                     if index2 == -1:
                         print("")
+                        faming_name.append('-1')
                         break
                 else:
                     index2 = data.find("发明人：</span><p class=\"funds\">")
@@ -74,9 +75,14 @@ class Zhanli(object):
                     print(data[index2 + len("发明人：</span><p class=\"funds\">"):index2_2], end=' ')
                     faming_name.append(data[index2 + len("发明人：</span><p class=\"funds\">"):index2_2])
                     print('')
+                    faming_name.append('-1')
                     break
             for i in faming_name:
-                f_faming.write('\n'+i)
+                if i=='-1':
+                    f_faming.write('\n')
+                else:
+                    f_faming.write(i)
+                    f_faming.write(';')
 
             index3 = data.find("分类号")
             index3_3 = data.find('</p>', index3)
@@ -136,6 +142,7 @@ class Zhanli(object):
                     index2 = data.find("TurnPageToKnetV('au'", index2 + 1)  # 发明人
                     if index2 == -1:
                         print("")
+                        faming_name.append('-1')
                         break
                 else:
                     index2 = data.find("发明人：</span><p class=\"funds\">")
@@ -143,9 +150,14 @@ class Zhanli(object):
                     print(data[index2 + len("发明人：</span><p class=\"funds\">"):index2_2], end=' ')
                     faming_name.append(data[index2 + len("发明人：</span><p class=\"funds\">"):index2_2])
                     print('')
+                    faming_name.append('-1')
                     break
             for i in faming_name:
-                f_faming.write('\n'+i)
+                if i=='-1':
+                    f_faming.write('\n')
+                else:
+                    f_faming.write(i)
+                    f_faming.write(';')
 
             index3 = data.find("分类号")
             index3_3 = data.find('</p>', index3)
