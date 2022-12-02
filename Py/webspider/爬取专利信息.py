@@ -2,15 +2,11 @@
 
 import requests
 # import xlsxwriter as xw
+import xlwt
 import os
 import json
 
-f_cn = open('cn.txt', 'a')
-f_time = open('time.txt', 'a')
-f_shenqing = open('申请人.txt', 'a')
-f_faming = open('发明人.txt', 'a')
-f_fenlei = open('分类号.txt', 'a')
-f_zhufenlei = open('主分类号.txt', 'a')
+
 
 class Zhanli(object):
     def __init__(self, cn):
@@ -40,20 +36,20 @@ class Zhanli(object):
             index0_0 = data.find('</p>',index0)
             print(" 申请公告日:" + data[index0 + len('申请公告日：</span><p class="funds">'):index0_0])
             # datetime = data[index0 + len('申请公告日：</span><p class="funds">'):index0_0]
-            f_time.write('\n'+data[index0 + len('申请公告日：</span><p class="funds">'):index0_0])
+            f_time.write(data[index0 + len('申请公告日：</span><p class="funds">'):index0_0]+'\n')
 
             index1 = data.find("TurnPageToKnetV('in','")  # 申请人
             if index1 != -1:
                 index1_1 = data.find("',", index1+len("TurnPageToKnetV('in','"))  # TODO:: 这里需要重新思考一下
                 print(" 申请人:" + data[index1 + len('TurnPageToKnetV(\'in\',\''):index1_1])
                 # shenqing_name = data[index1 + len('TurnPageToKnetV(\'in\',\''):index1_1]
-                f_shenqing.write('\n'+data[index1 + len('TurnPageToKnetV(\'in\',\''):index1_1], )
+                f_shenqing.write(data[index1 + len('TurnPageToKnetV(\'in\',\''):index1_1]+'\n')
             else:
                 index1 = data.find("申请人：</span><p class=\"funds\">")
                 index1_1 = data.find("</p>", index1)
                 print(" 申请人:" + data[index1 + len('申请人：</span><p class=\"funds\">'):index1_1])
                 # shenqing_name = data[index1 + len('申请人：</span><p class=\"funds\">'):index1_1]
-                f_shenqing.write('\n'+data[index1 + len('申请人：</span><p class=\"funds\">'):index1_1])
+                f_shenqing.write(data[index1 + len('申请人：</span><p class=\"funds\">'):index1_1]+'\n')
 
             index2 = 0
             index2 = data.find("TurnPageToKnetV('au'", index2 + 1)  # 发明人
@@ -88,13 +84,13 @@ class Zhanli(object):
             index3_3 = data.find('</p>', index3)
             print(" 分类号:" + data[index3 + len('分类号：</span><p class="funds">'):index3_3])
             # fenlei_num = data[index3 + len('分类号：</span><p class="funds">'):index3_3]
-            f_fenlei.write('\n'+data[index3 + len('分类号：</span><p class="funds">'):index3_3])
+            f_fenlei.write(data[index3 + len('分类号：</span><p class="funds">'):index3_3]+'\n')
 
             index4 = data.find('主分类号')
             index4_4 = data.find('</p>', index4)
             print(" 主分类号:"+data[index4+len('主分类号：</span><p class="funds">'):index4_4])
             # zhufenlei_num = data[index4+len('主分类号：</span><p class="funds">'):index4_4]
-            f_zhufenlei.write('\n'+data[index4+len('主分类号：</span><p class="funds">'):index4_4])
+            f_zhufenlei.write(data[index4+len('主分类号：</span><p class="funds">'):index4_4]+'\n')
 
             print("")
         # return [self.CN, datetime, shenqing_name, fenlei_num, zhufenlei_num]
@@ -115,20 +111,20 @@ class Zhanli(object):
             index0_0 = data.find('</p>', index0)
             print(" 授权公告日:" + data[index0 + len('授权公告日：</span><p class="funds">'):index0_0])
             # datetime = data[index0 + len('授权公告日：</span><p class="funds">'):index0_0]
-            f_time.write('\n'+data[index0 + len('授权公告日：</span><p class="funds">'):index0_0])
+            f_time.write(data[index0 + len('授权公告日：</span><p class="funds">'):index0_0]+'\n')
 
             index1 = data.find("TurnPageToKnetV('in','")  # 申请人
             if index1 != -1:
                 index1_1 = data.find("',", index1 + len("TurnPageToKnetV('in','"))  # TODO:: 这里需要重新思考一下
                 print(" 申请人:" + data[index1 + len('TurnPageToKnetV(\'in\',\''):index1_1])
                 # shenqing_name = data[index1 + len('TurnPageToKnetV(\'in\',\''):index1_1]
-                f_shenqing.write('\n'+data[index1 + len('TurnPageToKnetV(\'in\',\''):index1_1])
+                f_shenqing.write(data[index1 + len('TurnPageToKnetV(\'in\',\''):index1_1]+'\n')
             else:
                 index1 = data.find("申请人：</span><p class=\"funds\">")
                 index1_1 = data.find("</p>", index1)
                 print(" 申请人:" + data[index1 + len('申请人：</span><p class=\"funds\">'):index1_1])
                 # shenqing_name = data[index1 + len('申请人：</span><p class=\"funds\">'):index1_1]
-                f_shenqing.write('\n'+data[index1 + len('申请人：</span><p class=\"funds\">'):index1_1])
+                f_shenqing.write(data[index1 + len('申请人：</span><p class=\"funds\">'):index1_1]+'\n')
 
             index2 = 0
             index2 = data.find("TurnPageToKnetV('au'", index2 + 1)  # 发明人
@@ -163,19 +159,27 @@ class Zhanli(object):
             index3_3 = data.find('</p>', index3)
             print(" 分类号:" + data[index3 + len('分类号：</span><p class="funds">'):index3_3])
             # fenlei_num = data[index3 + len('分类号：</span><p class="funds">'):index3_3]
-            f_fenlei.write('\n'+data[index3 + len('分类号：</span><p class="funds">'):index3_3])
+            f_fenlei.write(data[index3 + len('分类号：</span><p class="funds">'):index3_3]+'\n')
 
             index4 = data.find('主分类号')
             index4_4 = data.find('</p>', index4)
             print(" 主分类号:" + data[index4 + len('主分类号：</span><p class="funds">'):index4_4])
             # zhufenlei_num = data[index4 + len('主分类号：</span><p class="funds">'):index4_4]
-            f_zhufenlei.write('\n'+data[index4 + len('主分类号：</span><p class="funds">'):index4_4])
+            f_zhufenlei.write(data[index4 + len('主分类号：</span><p class="funds">'):index4_4]+'\n')
 
             print("")
             # return [self.CN, datetime, shenqing_name, fenlei_num, zhufenlei_num]
 
 
 if __name__ == '__main__':
+
+    f_cn = open('cn.txt', 'w+')
+    f_time = open('time.txt', 'w+')
+    f_shenqing = open('申请人.txt', 'w+')
+    f_faming = open('发明人.txt', 'w+')
+    f_fenlei = open('分类号.txt', 'w+')
+    f_zhufenlei = open('主分类号.txt', 'w+')
+
     f = open("cn.data",'r')
     # content = f.readline()
     while True:
@@ -190,9 +194,75 @@ if __name__ == '__main__':
             elif content[-2:-1] == "U":
                 zhuanli = Zhanli(cn=content)
                 zhuanli.run_CN_U()
+
     f.close()
+    f_shenqing.close()
+    f_faming.close()
+    f_time.close()
+    f_cn.close()
+    f_zhufenlei.close()
+    f_fenlei.close()
 
+    f_cn = open('cn.txt', 'r')
+    f_time = open('time.txt', 'r')
+    f_shenqing = open('申请人.txt', 'r')
+    f_faming = open('发明人.txt', 'r')
+    f_fenlei = open('分类号.txt', 'r')
+    f_zhufenlei = open('主分类号.txt', 'r')
 
+    # 将数据写入excel
+    print("开始写excel")
+    book = xlwt.Workbook(encoding='utf-8')
+    sheet = book.add_sheet('sheet1', cell_overwrite_ok=True)
 
+    print("正在写excel")
+    i = 0
+    for word in f_cn:
+        print(word)
+        sheet.write(i, 0, word)
+        i=i+1
 
+    j = 0
+    for word in f_time:
+        print(word)
+        sheet.write(j, 1, word)
+        j=j+1
+    m = 0
+    for word in f_shenqing:
+        print(word)
+        sheet.write(m, 2, word)
+        m=m+1
+        print(m)
+    n = 0
+    for word in f_faming:
+        print(word)
+        sheet.write(n, 3, word)
+        n=n+1
+    p = 0
+    for word in f_fenlei:
+        print(word)
+        sheet.write(p, 4, word)
+        p=p+1
+    q = 0
+    for word in f_zhufenlei:
+        print(word)
+        sheet.write(q, 5, word)
+        q=q+1
+
+    book.save('整合信息reallyfinal.xls')
+    print("写完并保存excel")
+
+    f_shenqing.close()
+    f_faming.close()
+    f_time.close()
+    f_cn.close()
+    f_zhufenlei.close()
+    f_fenlei.close()
+
+    os.remove('cn.txt')
+    os.remove('time.txt')
+    os.remove('申请人.txt')
+    os.remove('发明人.txt')
+    os.remove('分类号.txt')
+    os.remove('主分类号.txt')
 
